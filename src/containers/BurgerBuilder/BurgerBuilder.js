@@ -1,6 +1,14 @@
 import  React ,{Component} from 'react';
 import  Aux from '../../hoc/Aux';
 import Burger from '../../Components/Burger/Burger';
+import BuildControls from '../../containers/BuildControls/BuildControls'
+
+const INGREDIENT_PRICE ={
+    salad: 0.3,
+    bacon:0.7,
+    cheese :0.4,
+    meat:1.2
+}
 
 class BurgerBuilder extends Component{
     state = {
@@ -9,7 +17,51 @@ class BurgerBuilder extends Component{
             bacon:0,
             cheese :0,
             meat:0
-        }
+        },
+        totalPrice :4
+
+    }
+
+    addIngredientHandler = (type)=>{
+        const oldCount = this.state.ingredients[type];
+        const newCount = oldCount + 1;
+        const updatedIngredients = {
+            ...this.state.ingredients
+        };
+
+        updatedIngredients[type] = newCount;
+        const priceAddtion = INGREDIENT_PRICE[type];
+        const oldPrice = this.state.totalPrice;
+        const newPrice = oldPrice + priceAddtion;
+
+        this.setState({
+            ingredients: updatedIngredients,
+            totalPrice: newPrice
+        })
+
+    }
+
+
+    // Method to remove the ingredients @addIngredientHandler of BurgerBuilder
+
+    removeIngredientHandler = (type)=>{
+        const oldCount = this.state.ingredients[type];
+        if(oldCount<=0)
+            return;
+        const newCount = oldCount - 1;
+        const updatedIngredients = {
+            ...this.state.ingredients
+        };
+
+        updatedIngredients[type] = newCount;
+        const priceDeduction = INGREDIENT_PRICE[type];
+        const oldPrice = this.state.totalPrice;
+        const newPrice = oldPrice + priceDeduction;
+
+        this.setState({
+            ingredients: updatedIngredients,
+            totalPrice: newPrice
+        })
 
     }
 
@@ -17,7 +69,9 @@ class BurgerBuilder extends Component{
         return (
             <Aux>
                 <Burger ingredients={this.state.ingredients} ></Burger>
-                <div>Burger Control</div>
+                <BuildControls
+                ingredientAdded={this.addIngredientHandler}
+                ingredientRemoved={this.removeIngredientHandler}/>
 
             </Aux>
         )
