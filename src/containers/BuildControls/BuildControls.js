@@ -21,7 +21,7 @@ const buildControls = (props)=>{
                           disabledInfo={props.disabledInfo[ctrl.type]}></BuildControl>
 
         ))}
-       <button disabled={!props.purchasable} className={classes.OrderButton} >Order Now</button>
+       <button disabled={!props.purchasable} className={classes.OrderButton} onClick={props.ordered}>Order Now</button>
     </div>
 }
 
